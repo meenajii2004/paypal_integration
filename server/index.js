@@ -4,7 +4,13 @@ const cors = require('cors');
 
 const app = express();
 
-app.use(cors());
+app.use(cors(
+    {
+        origin:[""],
+        methods:["POST","GET"],
+        credentials:true
+    }
+));
 
 paypal.configure({
     "mode": 'sandbox',
@@ -24,8 +30,8 @@ app.post('/payment', async (req, res) => {
                 "payment_method": "paypal"
             },
             "redirect_urls": {
-                "return_url": "http://localhost:8000/success",
-                "cancel_url": "http://localhost:8000/failed"
+                "return_url": "http://localhost:8001/success",
+                "cancel_url": "http://localhost:8001/failed"
             },
             "transactions": [{
                 "item_list": {
@@ -44,7 +50,6 @@ app.post('/payment', async (req, res) => {
                 "description": "This is the payment description."
             }]
         };
-
         await paypal.payment.create(create_payment_json, function (error, payment) { // Fixed 'function' here
             if (error) {
                 console.log(error);
@@ -101,6 +106,6 @@ app.get('/failed',async (req,res) =>{
     return res.redirect('http://localhost:5174/failed')
 })
 
-app.listen(8000, () => {
-    console.log("Example App on 8000");
+app.listen(8001, () => {
+    console.log("Example App on 8001");
 });

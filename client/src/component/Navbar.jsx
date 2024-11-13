@@ -38,9 +38,9 @@ export default function Navbar() {
                             <a className="nav-link" href="/">Pricing</a>
                         </div>
                     </div>
-                    <form class="d-flex" role="search">
-                        <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search" />
-                        <button class="btn" type="submit" style={{ backgroundColor: "white" }}>Search</button>
+                    <form className="d-flex" role="search">
+                        <input className="form-control me-2" type="search" placeholder="Search" aria-label="Search" />
+                        <button className="btn" type="submit" style={{ backgroundColor: "white" }}>Search</button>
                     </form>
                 </div>
             </nav>
