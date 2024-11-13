@@ -7,7 +7,7 @@ function App() {
   const handleSubmit =async (e) =>{
     e.preventDefault()
 
-    let res = await axios.post("https://paypal-integration-api.vercel.app/payment")
+    let res = await axios.post("https://paypal-integration-api.vercel.app/payment",data)
     console.log(res)
 
     if(res && res.data){
