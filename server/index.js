@@ -5,7 +5,7 @@ const cors = require('cors');
 const app = express();
 
 app.use(cors({
-    origin: ["https://paypal-integration-frontend.vercel.app"], // Update with your Vercel frontend domain
+    origin: "https://paypal-integration-frontend.vercel.app", // Update with your Vercel frontend domain
     methods: ["POST", "GET"],
     credentials: true
 }));
