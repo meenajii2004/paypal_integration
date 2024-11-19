@@ -4,18 +4,16 @@ const cors = require('cors');
 
 const app = express();
 
-app.use(cors(
-    {
-        origin:["https://paypal-integration-frontend.vercel.app"],
-        methods:["POST","GET"],
-        credentials:true
-    }
-));
+app.use(cors({
+    origin: ["https://paypal-integration-frontend.vercel.app"], // Update with your Vercel frontend domain
+    methods: ["POST", "GET"],
+    credentials: true
+}));
 
 paypal.configure({
-    "mode": 'sandbox',
-    "client_id": "AYUGvkcoZmKHjHpUH4S5854jtdscVdEvdHsATrVSb-AMEp60JYnoGJCa8htZPmCHUdgh8Q75V9tLIUl1",
-    "client_secret": "EPOoA7EkO7WBx660eEh4va3pWYUANwZfmgTqjfR8iPvcViTqVVLuE-mWSLVI8ZdFCO10DGAdd_UyUxMP"
+    "mode": 'sandbox', // Or 'live' for production
+    "client_id": "YOUR_CLIENT_ID",
+    "client_secret": "YOUR_CLIENT_SECRET"
 });
 
 app.get('/', (req, res) => {
@@ -30,15 +28,15 @@ app.post('/payment', async (req, res) => {
                 "payment_method": "paypal"
             },
             "redirect_urls": {
-                "return_url": "http://localhost:5176/success",
-                "cancel_url": "http://localhost:5176/failed"
+                "return_url": "https://paypal-integration-frontend.vercel.app/success", // Redirect to Vercel success page
+                "cancel_url": "https://paypal-integration-frontend.vercel.app/failed"  // Redirect to Vercel failed page
             },
             "transactions": [{
                 "item_list": {
                     "items": [{
                         "name": "item",
                         "sku": "item",
-                        "price": ".00",
+                        "price": "1.00", // Corrected amount
                         "currency": "USD",
                         "quantity": 1
                     }]
@@ -50,7 +48,8 @@ app.post('/payment', async (req, res) => {
                 "description": "This is the payment description."
             }]
         };
-        await paypal.payment.create(create_payment_json, function (error, payment) { // Fixed 'function' here
+        
+        await paypal.payment.create(create_payment_json, function (error, payment) {
             if (error) {
                 console.log(error);
                 throw error;
@@ -65,7 +64,6 @@ app.post('/payment', async (req, res) => {
     }
 });
 
-
 app.get('/success', async (req, res) => {
     try {
         console.log(req.query);
@@ -73,7 +71,7 @@ app.get('/success', async (req, res) => {
         const payerId = req.query.PayerID;
         const paymentId = req.query.paymentId;
 
-        const express_checkout_json = {
+        const execute_payment_json = {
             "payer_id": payerId,
             "transactions": [{
                 "amount": {
@@ -81,31 +79,26 @@ app.get('/success', async (req, res) => {
                     "total": "1.00"
                 }
             }]
-        }
+        };
 
-        paypal.payment.execute(paymentId, express_checkout_json, function (error, payment) { })
-
-        if (error) {
-            console.log(error);
-            return res.redirect("http://localhost:5176/failed")
-        }
-        else {
-            const response = JSON.stringify(payment);
-            const ParsedResponse = JSON.parse(response);
-
-            console.log(ParsedResponse);
-
-            return res.redirect("http://localhost:5176/success")
-        }
+        paypal.payment.execute(paymentId, execute_payment_json, function (error, payment) {
+            if (error) {
+                console.log(error);
+                return res.redirect("https://paypal-integration-frontend.vercel.app/failed");
+            } else {
+                console.log(JSON.stringify(payment));
+                return res.redirect("https://paypal-integration-frontend.vercel.app/success"); // Redirect to Vercel success page
+            }
+        });
     } catch (error) {
         console.log(error);
     }
 });
 
 app.get('/failed', async (req, res) => {
-    return res.redirect('http://localhost:5176/failed')   
-})
+    return res.redirect("https://paypal-integration-frontend.vercel.app/failed"); // Redirect to Vercel failed page
+});
 
-app.listen(8001 , () => { 
-    console.log("Example App on 8001");  
-});      
+app.listen(8001, () => {
+    console.log("Example App on 8001");
+});
