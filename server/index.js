@@ -30,15 +30,15 @@ app.post('/payment', async (req, res) => {
                 "payment_method": "paypal"
             },
             "redirect_urls": {
-                "return_url": "http://localhost:8001/success",
-                "cancel_url": "http://localhost:8001/failed"
+                "return_url": "http://localhost:5176/success",
+                "cancel_url": "http://localhost:5176/failed"
             },
             "transactions": [{
                 "item_list": {
                     "items": [{
                         "name": "item",
                         "sku": "item",
-                        "price": "1.00",
+                        "price": ".00",
                         "currency": "USD",
                         "quantity": 1
                     }]
@@ -83,29 +83,29 @@ app.get('/success', async (req, res) => {
             }]
         }
 
-            paypal.payment.execute(paymentId, express_checkout_json,function(error,payment){})
+        paypal.payment.execute(paymentId, express_checkout_json, function (error, payment) { })
 
-            if(error){
-                console.log(error);
-                return res.redirect("/http://localhost:5174/failed")
-            }
-            else{
-                const response = JSON.stringify(payment);
-                const ParsedResponse = JSON.parse(response);
+        if (error) {
+            console.log(error);
+            return res.redirect("/http://localhost:5176/failed")
+        }
+        else {
+            const response = JSON.stringify(payment);
+            const ParsedResponse = JSON.parse(response);
 
-                console.log(ParsedResponse);
+            console.log(ParsedResponse);
 
-                return res.redirect("http://localhost:5174/success")
-            }
+            return res.redirect("http://localhost:5176/success")
+        }
     } catch (error) {
         console.log(error);
     }
 });
 
-app.get('/failed',async (req,res) =>{
-    return res.redirect('http://localhost:5174/failed')
+app.get('/failed', async (req, res) => {
+    return res.redirect('http://localhost:5176/failed')   
 })
 
-app.listen(8001, () => {
-    console.log("Example App on 8001");
-});
+app.listen(8001 , () => { 
+    console.log("Example App on 8001");  
+});      

@@ -4,13 +4,13 @@ import React from 'react'
 export default function Navbar() {
 
     let style1 = {
-        backgroundColor: "#9DDE8B",
+        // backgroundColor: "#9DDE8B",
         margin: "0px",
         padding: "2px",
         borderRadius: "5px"
     }
     let style12 = {
-        backgroundColor: "#9DDE8B",
+        // backgroundColor: "#9DDE8B",
         margin: "0px",
         padding: "2px",
         borderRadius: "5px",
@@ -18,14 +18,14 @@ export default function Navbar() {
     }
 
     let style2 = {
-        backgroundColor: "#40A578",
+        // backgroundColor: "#40A578",
         margin: "0px",
         padding: "2px",
         borderRadius: "5px"
     }
     return (
         <div className='App' >
-            <nav className="navbar navbar-expand-lg" style={style12} >
+            <nav className="navbar navbar-expand-lg bg-transparent" style={style12} >
                 <div className="container-fluid" style={style1}>
                     <a className="navbar-brand" href="/">Diet Planner</a>
                     <button className="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
