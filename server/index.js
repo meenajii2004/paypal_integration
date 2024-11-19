@@ -30,8 +30,8 @@ app.post('/payment', async (req, res) => {
                 "payment_method": "paypal"
             },
             "redirect_urls": {
-                "return_url": "http://localhost:5176/success",
-                "cancel_url": "http://localhost:5176/failed"
+                "return_url": "https://paypal-integration-frontend.vercel.app/success",
+                "cancel_url": "https://paypal-integration-frontend.vercel.app/failed"
             },
             "transactions": [{
                 "item_list": {
@@ -87,7 +87,7 @@ app.get('/success', async (req, res) => {
 
         if (error) {
             console.log(error);
-            return res.redirect("/http://localhost:5176/failed")
+            return res.redirect("https://paypal-integration-frontend.vercel.app/failed")
         }
         else {
             const response = JSON.stringify(payment);
@@ -95,7 +95,7 @@ app.get('/success', async (req, res) => {
 
             console.log(ParsedResponse);
 
-            return res.redirect("http://localhost:5176/success")
+            return res.redirect("https://paypal-integration-frontend.vercel.app/success")
         }
     } catch (error) {
         console.log(error);
@@ -103,7 +103,7 @@ app.get('/success', async (req, res) => {
 });
 
 app.get('/failed', async (req, res) => {
-    return res.redirect('http://localhost:5176/failed')   
+    return res.redirect('https://paypal-integration-frontend.vercel.app/failed')   
 })
 
 app.listen(8001 , () => { 
